@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!--  *****   Link To Custom CSS Style Sheet   *****  -->
+	<link rel="stylesheet" type="text/css" href="assets/css/certification.css">
+
+	<!--  *****   Link To Font Awsome Icons   *****  -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Certifications</title>
+</head>
+<body>
+<section class="portfolio">
+	
+	<header class="section-head">
+		<h1>Select a skill</h1>
+	</header>
+
+	<main class="mainContainer">
+		
+		<!--  *****  Buttons Section Starts  *****  -->
+		<div class="button-group">
+			<button class="button active" data-filter="*">All</button>
+			<button class="button" data-filter=".network">Cisco Nestworking Academy</button>
+		    <button class="button" data-filter=".front">Frontend Development Certifications</button>
+            <button class="button" data-filter=".back">Backend Development Certifications</button>
+			<button class="button" data-filter=".marketing">Marketing</button>
+            <button class="button" data-filter=".videoEditing">Video Editing</button>
+            <button class="button" data-filter=".entrepreneuriat">Entrepreneurship</button>
+            <button class="button" data-filter=".competition">Competitions & Hackathons</button>
+            <button class="button" data-filter=".enactus">Enactus</button>
+            <button class="button" data-filter=".german">German</button>
+            <button class="button" data-filter=".events">Festivals & Events</button>
+
+		</div>
+		<!--  *****  Buttons Section Ends  *****  -->
+
+		<!--  *****  Gallery Section Starts  *****  -->
+		<div class="gallery">
+			
+			<!--  *****  Card 1 Starts  *****  -->
+			<div class="item network">
+				<img src="certification/Capture d’écran 2025-09-21 145105.png">
+				<div class="overlay">
+					<a href="certification/CyberThreatManagementUpdate20250205-26-hv68gi.pdf" target="_blank">View</a>
+				</div>
+			</div>
+			<!--  *****  Card 1 Ends  *****  -->
+
+			<!--  *****  Card 2 Starts  *****  -->
+			<div class="item marketing">
+				<img src="certification/marketing.jpg" >
+				<div class="overlay">
+					<a href="certification/marketing.pdf" target="_blank">View</a>
+				</div>
+			</div>
+			<!--  *****  Card 2 Ends  *****  -->
+
+			<!--  *****  Card 3 Starts  *****  -->
+			<div class="item videoEditing">
+				<img src="certification/videoEditing.jpg">
+				<div class="overlay">
+					<a href="certification/videoEditing.pdf" target="_blank">View</a>
+				</div>
+			</div>
+			<!--  *****  Card 3 Ends  *****  -->
+
+			<!--  *****  Card 4 Starts  *****  -->
+			<div class="item entrepreneuriat">
+				<img src="certification/entrepreneuriat.jpg">
+				<div class="overlay">
+					<a href="certification/entrepreneuriat.pdf" target="_blank">View</a>
+				</div>
+			</div>
+			<!--  *****  Card 4 Ends  *****  -->
+
+			<!--  *****  Card 5 Starts  *****  -->
+			<div class="item event">
+				<img src="certification/eventFsm1.jpg">
+				<div class="overlay">
+					<a href="certification/eventFsm1.pdf" target="_blank">View</a>
+				</div>
+			</div>
+			<!--  *****  Card 5 Ends  *****  -->
+
+			<!--  *****  Card 6 Starts  *****  -->
+			<div class="item competition">
+				<img src="certification/injezPIC.jpg">
+				<div class="overlay">
+					<a href="certification/injezPIC.pdf">View</a>
+				</div>
+			</div>
+			<!--  *****  Card 6 Ends  *****  -->
+
+              <!--  *****  Card 7 Starts  *****  -->
+			<div class="item enactus">
+				<img src="certification/enactus2024.png">
+				<div class="overlay">
+					<a href="certification/Attestation - Enactus FSM - Partie 1-1-26-16.pdf" target="_blank">View</a>
+				</div>
+			</div>
+			<!--  *****  Card 7 Ends  *****  -->
+
+             <!--  *****  Card 8 Starts  *****  -->
+			<div class="item german">
+				<img src="">
+				<div class="overlay">
+					<a href="#">View</a>
+				</div>
+			</div>
+			<!--  *****  Card 8 Ends  *****  -->
+
+		</div>
+		<!--  *****  Gallery Section Ends  *****  -->
+
+	</main>
+
+</section>
+
+
+
+<!--   *****   JQuery Link   *****   -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+<!--   *****   Isotope Filter Link   *****  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
+
+<script type="text/javascript">
+	var $galleryContainer = $('.gallery').isotope({
+		itemSelector: '.item',
+  		layoutMode: 'fitRows'
+	})
+
+	$('.button-group .button').on('click', function(){
+		$('.button-group .button').removeClass('active');
+		$(this).addClass('active');
+
+		var value = $(this).attr('data-filter');
+		$galleryContainer.isotope({
+			filter: value 
+		})
+	})
+</script>
+
+</body>
+</html>

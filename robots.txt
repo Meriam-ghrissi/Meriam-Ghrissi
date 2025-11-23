@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://meriam-ghrissi.github.io/Meriam-Ghrissi/sitemap.xml

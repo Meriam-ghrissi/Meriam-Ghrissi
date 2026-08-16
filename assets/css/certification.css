@@ -6,11 +6,12 @@
   }
   html{
     /*   *****   Storing Colors In Variables   *****  */
-    --body-clr: #f6f9fe;
-    --primary-clr: #05555c;
-    --primary-light-clr: #eaf3fa;
-    --links-clr: #186f78;
-    --text-clr: #3f7277;
+    /* Matched to index.html's palette (--hue-color: 250, purple) */
+    --body-clr: hsl(250, 60%, 99%);
+    --primary-clr: hsl(250, 69%, 61%);
+    --primary-light-clr: hsl(250, 70%, 96%);
+    --links-clr: hsl(250, 57%, 53%);
+    --text-clr: hsl(250, 8%, 45%);
   }
   body{
     width: 100%;
@@ -40,7 +41,7 @@
     display: inline-block;
     padding: 10px 20px;
     margin: 5px;
-    background-color: #c8d1d8;
+    background-color: hsl(250, 25%, 88%);
     color: var(--primary-clr);
     font-style: 12px;
     font-weight: 800;
@@ -91,7 +92,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(5,85,92,0.7);
+    background-color: hsla(250, 55%, 35%, 0.75);
     color: var(--body-clr);
     padding: 15px;
     overflow: hidden;

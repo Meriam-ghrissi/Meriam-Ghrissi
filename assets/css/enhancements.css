@@ -1,0 +1,581 @@
+/*========== 1. NOUVELLES VARIABLES ==========*/
+:root {
+  --first-color-rgb: 132, 92, 246; /* correspond a --hue-color: 250 en RGB approx */
+  --gradient: linear-gradient(135deg, var(--first-color), var(--first-color-alt));
+  --shadow-soft: 0 8px 24px -8px rgba(var(--first-color-rgb), .25);
+  --shadow-hover: 0 16px 32px -10px rgba(var(--first-color-rgb), .35);
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --ease: cubic-bezier(.4, 0, .2, 1);
+}
+
+body.dark-theme {
+  --shadow-soft: 0 8px 24px -8px rgba(0, 0, 0, .5);
+  --shadow-hover: 0 16px 32px -10px rgba(0, 0, 0, .6);
+}
+
+/*========== 2. BASE / SMOOTH FEEL ==========*/
+*, *::before, *::after {
+  transition: background-color .3s var(--ease), border-color .3s var(--ease);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--first-color);
+  color: #fff;
+}
+
+/*========== 3. SCROLL-REVEAL (works with .reveal class added by main.js) ==========*/
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .7s var(--ease), transform .7s var(--ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* .services__content holds a position:fixed modal. ANY transform on
+   it - even mid-animation, even translateY(24px) before it's
+   revealed - breaks the modal's full-screen overlay by creating a
+   new containing block for that fixed child. Rather than race a
+   timer against a possible early click, just never transform this
+   specific element: fade it in with opacity only. */
+.services__content.reveal {
+  transform: none !important;
+}
+
+/*========== 4. NAV / HEADER ==========*/
+.header {
+  background-color: rgba(255, 255, 255, .92);
+  transition: box-shadow .3s var(--ease), background-color .3s var(--ease);
+}
+
+body.dark-theme .header {
+  background-color: rgba(19, 17, 28, .92);
+}
+
+/* backdrop-filter only on desktop: on mobile it breaks the sliding
+   nav menu because it creates a new containing block for its
+   position:fixed children (the nav__menu drawer no longer hides
+   off-screen correctly). Safe to use once the menu is no longer
+   a fixed overlay panel (>=768px). */
+@media screen and (min-width: 768px) {
+  .header {
+    background-color: rgba(255, 255, 255, .7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(var(--first-color-rgb), .12);
+  }
+
+  body.dark-theme .header {
+    background-color: rgba(19, 17, 28, .7);
+    border-top-color: rgba(255, 255, 255, .08);
+  }
+}
+
+.header.scroll-header {
+  box-shadow: 0 -4px 24px rgba(var(--first-color-rgb), .18);
+}
+
+.nav__logo {
+  font-weight: var(--font-semi-bold);
+  letter-spacing: .02em;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: filter .3s var(--ease);
+}
+
+.nav__logo:hover {
+  filter: brightness(1.15);
+  color: transparent;
+}
+
+.nav__link {
+  position: relative;
+  transition: color .3s var(--ease), transform .3s var(--ease);
+}
+
+.nav__link:hover {
+  transform: translateY(-2px);
+}
+
+.change-theme {
+  transition: transform .4s var(--ease), color .3s var(--ease);
+}
+
+.change-theme:hover {
+  transform: rotate(20deg) scale(1.15);
+}
+
+/*========== 5. BUTTONS ==========*/
+.button {
+  background: var(--gradient);
+  box-shadow: var(--shadow-soft);
+  border: none;
+  cursor: pointer;
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease), filter .3s var(--ease);
+}
+
+.button:hover {
+  background: var(--gradient);
+  filter: brightness(1.08);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.button:active {
+  transform: translateY(-1px);
+}
+
+.button--white {
+  background: #fff;
+  box-shadow: 0 8px 24px -10px rgba(0, 0, 0, .25);
+}
+
+.button--white:hover {
+  background: #fff;
+  filter: none;
+}
+
+.button--link {
+  background: none;
+  box-shadow: none;
+  color: var(--first-color);
+}
+
+.button--link:hover {
+  background: none;
+  box-shadow: none;
+  transform: translateX(4px);
+}
+
+/*========== 6. SECTION TITLES ==========*/
+.section__title {
+  position: relative;
+  display: block;
+  text-align: center;
+  padding-bottom: .6rem;
+}
+
+.section__title::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 3.5rem;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--gradient);
+}
+
+/*========== 7. HOME ==========*/
+.home {
+  position: relative;
+}
+
+.home::before {
+  content: "";
+  position: absolute;
+  inset: -10% -10% auto -10%;
+  height: 60%;
+  background: radial-gradient(60% 60% at 50% 0%, rgba(var(--first-color-rgb), .16), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.home__blob {
+  filter: drop-shadow(0 16px 32px rgba(var(--first-color-rgb), .35));
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.home__social-icon {
+  transition: transform .3s var(--ease), color .3s var(--ease);
+}
+
+.home__social-icon:hover {
+  transform: translateY(-4px) scale(1.1);
+}
+
+.home__title {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1.15;
+}
+
+/*========== 8. ABOUT ==========*/
+.about__img {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+
+.about__img:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.about__info {
+  text-align: center;
+}
+
+.about__info-title {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*========== 9. SKILLS ==========*/
+.skills__header,
+.skills__header1 {
+  border-radius: .75rem;
+  padding: .5rem .75rem;
+  transition: background-color .3s var(--ease);
+}
+
+.skills__header:hover,
+.skills__header1:hover {
+  background-color: rgba(var(--first-color-rgb), .06);
+}
+
+.skills__bar {
+  overflow: hidden;
+}
+
+.skills__percentage {
+  background: var(--gradient);
+  border-radius: .25rem;
+  position: relative;
+  transform-origin: left;
+  animation: grow-bar 1.2s var(--ease) both;
+}
+
+@keyframes grow-bar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/*========== 10. LANGUAGES / SERVICES CARDS ==========*/
+.languages__content,
+.services__content {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow .35s var(--ease);
+}
+
+.languages__content {
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.languages__content:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* .services__content holds a position:fixed modal (.services__modal).
+   A `transform` on this card (even just on :hover) creates a new
+   containing block for that fixed child, which breaks the modal's
+   full-screen overlay the moment you hover/click the card. Use
+   margin instead of transform so the lift effect doesn't touch the
+   modal's positioning. */
+.services__content:hover {
+  margin-top: -6px;
+  margin-bottom: 6px;
+  box-shadow: var(--shadow-hover);
+}
+
+.languages__percentage {
+  background: var(--gradient);
+}
+
+.services__icon {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*========== 11. QUALIFICATION TABS ==========*/
+.qualification__button {
+  transition: color .3s var(--ease), transform .3s var(--ease);
+}
+
+.qualification__button:hover {
+  transform: translateY(-2px);
+}
+
+.qualification__active::after {
+  background: var(--gradient) !important;
+}
+
+/*========== 11.5 QUALIFICATION COMPANY LOGOS ==========*/
+.qualification__company {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: .15rem;
+}
+
+.qualification__logo {
+  width: auto;
+  max-width: 4.5rem;
+  height: 3.5rem;
+  object-fit: contain;
+  border-radius: .5rem;
+  background: #fff;
+  padding: .3rem .4rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .12);
+  flex-shrink: 0;
+}
+
+/* Keep the logo+title row aligned to the right column's text-align
+   (education/work items sometimes sit on the right side and are
+   centered on small screens) */
+@media screen and (max-width: 767px) {
+  .qualification__company {
+    justify-content: center;
+  }
+}
+
+/* The stock template makes the timeline column quite narrow on
+   tablet/small-desktop widths (.6fr / .5fr of a 768px container),
+   which forces long titles like the ones with a logo to wrap onto
+   many lines. Uneven row heights between entries can make the
+   connecting purple line look broken at the seam between two
+   entries. Widening the column fixes both. */
+@media screen and (min-width: 568px) {
+  .qualification__sections {
+    grid-template-columns: .85fr;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .qualification__sections {
+    grid-template-columns: .9fr;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .qualification__sections {
+    grid-template-columns: .75fr;
+  }
+}
+
+/* Make sure the connecting line always fills its row completely,
+   with no rounding gap between consecutive entries */
+.qualification__data {
+  row-gap: 0;
+}
+
+.qualification__data > div {
+  align-self: stretch;
+}
+
+/*========== 12. PORTFOLIO ==========*/
+.portfolio__img {
+  box-shadow: var(--shadow-soft);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+
+.portfolio__content:hover .portfolio__img {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-hover);
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  background: var(--container-color);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  box-shadow: var(--shadow-soft);
+  transition: transform .3s var(--ease);
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  transform: scale(1.1);
+}
+
+/*========== 13. TESTIMONIAL ==========*/
+.testimonial__content {
+  border-radius: var(--radius-md);
+}
+
+.testimonial__data {
+  background-color: var(--container-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-soft);
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.testimonial__data:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.testimonial__img {
+  border: 2px solid var(--first-color);
+}
+
+.testimonial__icon-star {
+  color: #f5b942;
+}
+
+/*========== 14. CONTACT FORM ==========*/
+.contact__input {
+  border-radius: .5rem;
+  border: 1px solid transparent;
+  transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+
+.contact__input:focus {
+  outline: none;
+  border-color: var(--first-color);
+  box-shadow: 0 0 0 3px rgba(var(--first-color-rgb), .18);
+}
+
+.contact__icon {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*========== 15. FOOTER ==========*/
+.footer__bg {
+  background: linear-gradient(160deg, hsl(var(--hue-color), 55%, 22%), hsl(var(--hue-color), 55%, 12%));
+}
+
+.footer__social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .1);
+  transition: transform .3s var(--ease), background-color .3s var(--ease);
+}
+
+.footer__social:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, .2);
+  color: #fff;
+}
+
+/*========== 16. SCROLL UP ==========*/
+.scrollup {
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient);
+  opacity: 1;
+  box-shadow: var(--shadow-soft);
+  right: 1.5rem;
+}
+
+.scrollup:hover {
+  background: var(--gradient);
+  filter: brightness(1.1);
+  transform: translateY(-4px);
+}
+
+/*========== 17. SCROLLBAR ==========*/
+::-webkit-scrollbar-thumb {
+  background: var(--gradient);
+}
+
+/*========== 18. CENTER ALL TITLES ==========*/
+/* Services cards: icon + title + link, all centered */
+.services__content {
+  text-align: center;
+  padding: 3.5rem 1.25rem 1.5rem;
+}
+
+.services__icon {
+  display: inline-block;
+  margin: 0 auto var(--mb-1);
+}
+
+.services__button {
+  justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+  .services__content {
+    padding: 3.5rem 1rem 2rem;
+  }
+}
+
+/* Portfolio: title centered on every screen size */
+.portfolio__title {
+  text-align: center;
+}
+
+/* Testimonial name/header centered */
+.testimonial__header {
+  flex-direction: column;
+  text-align: center;
+}
+
+.testimonial__header > div {
+  margin-top: .5rem;
+}
+
+.testimonial__name {
+  text-align: center;
+}
+
+.testimonial__data > div:nth-child(2) {
+  text-align: center;
+  margin-bottom: var(--mb-0-5);
+}
+
+/* Languages already centered by the base stylesheet, kept consistent */
+.languages__name {
+  text-align: center;
+}
+
+/* Footer title/subtitle centered on mobile where the columns stack */
+@media screen and (max-width: 767px) {
+  .footer__container > div:first-child,
+  .footer__links,
+  .footer__socials {
+    text-align: center;
+    align-items: center;
+  }
+}
+
+/*========== 19. REDUCED MOTION ==========*/
+@media (prefers-reduced-motion: reduce) {
+  .home__blob,
+  .skills__percentage,
+  .reveal {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

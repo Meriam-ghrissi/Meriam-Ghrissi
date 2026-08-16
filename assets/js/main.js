@@ -185,6 +185,45 @@ window.addEventListener('scroll', scrollActive)
 
 
 
+/*==================== SCROLL HEADER SHADOW ====================*/
+const header = document.getElementById('header')
+function scrollHeader(){
+    if(this.scrollY >= 80) header.classList.add('scroll-header')
+    else header.classList.remove('scroll-header')
+}
+window.addEventListener('scroll', scrollHeader)
+
+/*==================== SCROLL REVEAL ANIMATION ====================*/
+/* Adds a fade/slide-in effect the first time each element enters view */
+const revealTargets = document.querySelectorAll(
+    '.section__title, .section__subtitle, .home__data, .home__social, .home__img, ' +
+    '.about__img, .about__data, .skills__content, .languages__content, ' +
+    '.services__content, .portfolio__content, .testimonial__content, ' +
+    '.contact__container > div, .contact__form'
+)
+
+revealTargets.forEach(el => el.classList.add('reveal'))
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+            const el = entry.target
+            el.classList.add('is-visible')
+            revealObserver.unobserve(el)
+            // Once the fade/slide-in transition finishes, drop the
+            // transform entirely (translateY(0) is still a "transform"
+            // as far as CSS is concerned, and any transform on an
+            // ancestor breaks position:fixed children like the
+            // services/portfolio modals). Removing it afterwards keeps
+            // the animation while avoiding that side effect.
+            setTimeout(() => { el.style.transform = 'none' }, 750)
+        }
+    })
+}, { threshold: 0.15 })
+
+revealTargets.forEach(el => revealObserver.observe(el))
+
+
 /*==================== DARK LIGHT THEME ====================*/ 
 const themeButton = document.getElementById('theme-button')
 const darkTheme = 'dark-theme'
@@ -212,3 +251,56 @@ localStorage.setItem('selected-theme', getCurrentTheme())
 localStorage.setItem('selected-icon', getCurrentIcon())
 })
 
+
+/*==================== CONTACT FORM (EmailJS) ====================*/
+/* 1) Replace the 3 placeholders below with the values from your
+      EmailJS dashboard (Account > General for the public key,
+      Email Services / Email Templates for the other two).
+   2) Make sure your EmailJS template uses the same variable names
+      as the form fields: {{user_name}}, {{user_email}}, {{project}},
+      {{message}}. */
+const EMAILJS_PUBLIC_KEY  = 'z7DlFQjludChXMsSB'
+const EMAILJS_SERVICE_ID  = 'service_vxbijkc'
+const EMAILJS_TEMPLATE_ID = 'template_rnb132d'
+
+if (typeof emailjs !== 'undefined') {
+    emailjs.init(EMAILJS_PUBLIC_KEY)
+}
+
+const contactForm = document.getElementById('contact-form')
+const contactSubmit = document.getElementById('contact-submit')
+const contactStatus = document.getElementById('contact-status')
+
+if (contactForm) {
+    contactForm.addEventListener('submit', function (e) {
+        e.preventDefault()
+
+        if (typeof emailjs === 'undefined') {
+            contactStatus.textContent = 'Could not reach the email service. Please refresh the page and try again, or email me directly.'
+            contactStatus.classList.add('contact__status--error')
+            return
+        }
+
+        const originalLabel = contactSubmit.innerHTML
+        contactSubmit.disabled = true
+        contactSubmit.innerHTML = 'Sending...'
+        contactStatus.textContent = ''
+        contactStatus.className = 'contact__status'
+
+        emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, contactForm)
+            .then(() => {
+                contactStatus.textContent = 'Message sent successfully! I will get back to you soon.'
+                contactStatus.classList.add('contact__status--success')
+                contactForm.reset()
+            })
+            .catch((error) => {
+                console.error('EmailJS error:', error)
+                contactStatus.textContent = 'Something went wrong. Please try again or email me directly.'
+                contactStatus.classList.add('contact__status--error')
+            })
+            .finally(() => {
+                contactSubmit.disabled = false
+                contactSubmit.innerHTML = originalLabel
+            })
+    })
+}
